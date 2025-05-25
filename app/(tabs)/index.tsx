@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   FlatList,
+  Pressable,
   RefreshControl,
   SafeAreaView,
   StyleSheet,
@@ -91,13 +92,31 @@ export default function ProductsScreen() {
     <ProductCard product={item} />
   );
 
+  const renderEmptyState = () => (
+    <View style={styles.emptyState}>
+      <Ionicons name="search-outline" size={48} color={secondaryColor} />
+      <Text style={[styles.emptyStateTitle, { color: textColor }]}>
+        No products found
+      </Text>
+      <Text style={[styles.emptyStateSubtitle, { color: secondaryColor }]}>
+        {searchQuery 
+          ? `No products match "${searchQuery}". Try searching for something else.`
+          : 'No products available at the moment.'
+        }
+      </Text>
+    </View>
+  );
+
   const renderHeader = () => (
     <View style={[styles.header, { backgroundColor: surfaceColor }]}>
       <Text style={[styles.headerTitle, { color: textColor }]}>
         Discover Products
       </Text>
       <Text style={[styles.headerSubtitle, { color: secondaryColor }]}>
-        {filteredProducts.length} amazing {filteredProducts.length === 1 ? 'product' : 'products'} {searchQuery ? 'found' : 'waiting for you'}
+        {searchQuery 
+          ? `${filteredProducts.length} amazing ${filteredProducts.length === 1 ? 'product' : 'products'} found`
+          : `${filteredProducts.length} amazing ${filteredProducts.length === 1 ? 'product' : 'products'} waiting for you`
+        }
       </Text>
       
       {/* Search Bar */}
@@ -112,13 +131,14 @@ export default function ProductsScreen() {
           returnKeyType="search"
         />
         {searchQuery.length > 0 && (
-          <Ionicons 
-            name="close-circle" 
-            size={20} 
-            color={secondaryColor} 
-            style={styles.clearIcon}
-            onPress={() => setSearchQuery('')}
-          />
+          <Pressable onPress={() => setSearchQuery('')}>
+            <Ionicons 
+              name="close-circle" 
+              size={20} 
+              color={secondaryColor} 
+              style={styles.clearIcon}
+            />
+          </Pressable>
         )}
       </View>
     </View>
@@ -137,6 +157,7 @@ export default function ProductsScreen() {
         numColumns={2}
         columnWrapperStyle={styles.row}
         ListHeaderComponent={renderHeader}
+        ListEmptyComponent={renderEmptyState}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -200,5 +221,22 @@ const styles = StyleSheet.create({
   },
   clearIcon: {
     marginLeft: 8,
+  },
+  emptyState: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  emptyStateTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 12,
+    marginBottom: 4,
+  },
+  emptyStateSubtitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    opacity: 0.7,
   },
 });

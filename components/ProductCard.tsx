@@ -1,28 +1,28 @@
-import { Ionicons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
-import { Image } from 'expo-image';
-import { router } from 'expo-router';
-import React, { memo } from 'react';
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useCart } from '../contexts/CartContext';
-import { useThemeColor } from '../hooks/useThemeColor';
-import { Product } from '../types';
+import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
+import { Image } from "expo-image";
+import { router } from "expo-router";
+import React, { memo } from "react";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import { useCart } from "../contexts/CartContext";
+import { useThemeColor } from "../hooks/useThemeColor";
+import { Product } from "../types";
 
 interface ProductCardProps {
   product: Product;
 }
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 const cardWidth = (width - 48) / 2; // 16px padding + 16px gap
 
 function ProductCard({ product }: ProductCardProps) {
-  const backgroundColor = useThemeColor({}, 'cardBackground') as string;
-  const textColor = useThemeColor({}, 'text') as string;
-  const secondaryColor = useThemeColor({}, 'secondary') as string;
-  const priceColor = useThemeColor({}, 'price') as string;
-  const primaryColor = useThemeColor({}, 'primary') as string;
-  const shadowColor = useThemeColor({}, 'cardShadow') as string;
-  const surfaceColor = useThemeColor({}, 'surface') as string;
+  const backgroundColor = useThemeColor({}, "cardBackground") as string;
+  const textColor = useThemeColor({}, "text") as string;
+  const secondaryColor = useThemeColor({}, "secondary") as string;
+  const priceColor = useThemeColor({}, "price") as string;
+  const primaryColor = useThemeColor({}, "primary") as string;
+  const shadowColor = useThemeColor({}, "cardShadow") as string;
+  const surfaceColor = useThemeColor({}, "surface") as string;
 
   const { addToCart } = useCart();
   const handleProductPress = () => {
@@ -37,14 +37,16 @@ function ProductCard({ product }: ProductCardProps) {
   };
 
   // Truncate title if too long
-  const truncatedTitle = product.title.length > 40 
-    ? product.title.substring(0, 40) + '...' 
-    : product.title;
+  const truncatedTitle =
+    product.title.length > 40
+      ? product.title.substring(0, 40) + "..."
+      : product.title;
 
   return (
     <Pressable
       style={({ pressed }) => [
-        styles.container,        {
+        styles.container,
+        {
           backgroundColor,
           width: cardWidth,
           opacity: pressed ? 0.95 : 1,
@@ -61,13 +63,14 @@ function ProductCard({ product }: ProductCardProps) {
           style={styles.image}
           contentFit="contain"
           transition={200}
-          placeholder={{ blurhash: 'L6PZfSi_.AyE_3t7t7R**0o#DgR4' }}
+          placeholder={{ blurhash: "L6PZfSi_.AyE_3t7t7R**0o#DgR4" }}
         />
-        
+
         {/* Add to Cart Button - Floating */}
         <Pressable
           style={({ pressed }) => [
-            styles.floatingAddButton,            {
+            styles.floatingAddButton,
+            {
               backgroundColor: primaryColor,
               opacity: pressed ? 0.8 : 1,
               transform: [{ scale: pressed ? 0.9 : 1 }],
@@ -80,14 +83,16 @@ function ProductCard({ product }: ProductCardProps) {
       </View>
 
       {/* Product Info */}
-      <View style={styles.infoContainer}>        <Text style={[styles.category, { color: primaryColor }]} numberOfLines={1}>
+      <View style={styles.infoContainer}>
+        <Text
+          style={[styles.category, { color: primaryColor }]}
+          numberOfLines={1}
+        >
           {product.category.toUpperCase()}
         </Text>
-        
         <Text style={[styles.title, { color: textColor }]} numberOfLines={2}>
           {truncatedTitle}
         </Text>
-
         <View style={styles.ratingContainer}>
           <Ionicons name="star" size={12} color="#fbbf24" />
           <Text style={[styles.rating, { color: secondaryColor }]}>
@@ -97,7 +102,6 @@ function ProductCard({ product }: ProductCardProps) {
             ({product.rating.count})
           </Text>
         </View>
-
         <Text style={[styles.price, { color: priceColor }]}>
           ${product.price.toFixed(2)}
         </Text>
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 20,
     marginBottom: 16,
-    overflow: 'hidden',
+    overflow: "hidden",
     elevation: 4,
     shadowOffset: {
       width: 0,
@@ -123,25 +127,25 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: 160,
-    position: 'relative',
+    position: "relative",
     padding: 16,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderRadius: 12,
   },
   floatingAddButton: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 12,
     right: 12,
     width: 36,
     height: 36,
     borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     elevation: 6,
     shadowOffset: {
       width: 0,
@@ -156,26 +160,26 @@ const styles = StyleSheet.create({
   },
   category: {
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: "700",
     letterSpacing: 1,
     marginBottom: 6,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   title: {
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: "600",
     lineHeight: 20,
     marginBottom: 8,
     minHeight: 40,
   },
   ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   rating: {
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: "600",
     marginLeft: 3,
   },
   reviewCount: {
@@ -185,7 +189,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: "700",
     letterSpacing: 0.5,
   },
 });
